@@ -1,0 +1,55 @@
+name: 'aw_dbt'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt should use for this project.
+profile: 'aw_dbt' # You should define this profile in your profiles.yml
+
+# These configurations specify where dbt should look for different resources.
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to clean when `dbt clean` is run
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+# Configuration for models
+models:
+  aw_dbt:
+    # Set the materialization for models in the 'marts' directory to 'table'
+    # This will ensure your final tables are created as actual tables in Databricks.
+    marts:
+      materialized: table
+    
+    # Configure schemas for different layers
+    # Assuming your Databricks environment uses catalogs and schemas
+    # You might need to adjust 'your_catalog' based on your Databricks setup.
+    staging:
+      +schema: staging
+      +materialized: view # Staging models often benefit from being views for flexibility
+    intermediate:
+      +schema: intermediate
+      +materialized: view # Intermediate models can also be views
+    marts:
+      +schema: marts
+      [cite_start]+materialized: table # Marts models should be tables as per requirements 
+
+# Example of sources configuration
+# You would define your raw data sources here.
+# Replace 'your_database' and 'your_schema' with your actual raw data locations.
+sources:
+  - name: adventureworks_raw
+    database: your_catalog # Or your_database if you are not using Unity Catalog
+    schema: raw_adventureworks
+    tables:
+      - name: customer
+      - name: salesorderheader
+      - name: salesorderdetail
+      - name: product
+      # Add all your raw tables here

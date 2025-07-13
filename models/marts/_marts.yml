@@ -1,0 +1,90 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: Dimension table for customers.
+    columns:
+      - name: customer_key
+        description: Surrogate key for the customer dimension.
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Natural key for the customer from the source system.
+        tests:
+          - unique
+          - not_null
+      - name: account_number
+        description: Customer's account number.
+      - name: is_store_customer
+        description: 'True if the customer is associated with a store, False otherwise.'
+
+  - name: dim_product
+    description: Dimension table for products.
+    columns:
+      - name: product_key
+        description: Surrogate key for the product dimension.
+        tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: Natural key for the product from the source system.
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: Name of the product.
+      - name: list_price
+        description: Selling price of the product.
+      - name: product_category
+        description: Category of the product.
+
+  - name: fact_sales
+    description: Fact table containing sales transaction data.
+    columns:
+      - name: sales_order_detail_key
+        description: Surrogate key for the sales order detail.
+        tests:
+          - unique
+          - not_null
+      - name: sales_order_id
+        description: Natural key for the sales order header.
+      - name: sales_order_detail_id
+        description: Natural key for the sales order detail.
+      - name: customer_key
+        description: Foreign key to dim_customer.
+        tests:
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+      - name: product_key
+        description: Foreign key to dim_product.
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+      - name: order_date
+        description: Date of the sales order.
+      - name: order_quantity
+        description: Quantity of the product ordered.
+      - name: unit_price
+        description: Unit price of the product at the time of order.
+      - name: unit_price_discount
+        description: Discount applied to the unit price.
+      - name: gross_amount
+        description: Calculated gross amount (quantity * unit price).
+      - name: net_amount
+        description: Calculated net amount (gross amount * (1 - discount)).
+
+  - name: fact_sales_daily_snapshot # Example of additional fact table 
+    description: Daily snapshot of total sales.
+    columns:
+      - name: snapshot_date
+        description: The date for which the snapshot was taken.
+        tests:
+          - unique
+          - not_null
+      - name: total_sales_amount
+        description: The total net sales amount for the day.
+      - name: total_orders
+        description: The total number of unique orders for the day.

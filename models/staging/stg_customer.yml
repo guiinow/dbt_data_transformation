@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_customer
+    description: Staging model for customer data, cleaned and standardized.
+    columns:
+      - name: customer_id
+        description: Primary key for customers. Unique and not null.
+        tests:
+          - unique
+          - not_null
+      - name: person_id
+        description: Associated person ID.
+      - name: store_id
+        description: Associated store ID.
+      - name: territory_id
+        description: Associated territory ID.
+      - name: account_number
+        description: Customer's account number.
+      - name: row_guid
+        description: Unique row identifier.
+      - name: modified_date
+        description: Date the record was last modified.
