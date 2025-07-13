@@ -2,8 +2,8 @@ version: 2
 
 sources:
   - name: adventureworks_raw
-    database: your_catalog # Replace with your Databricks Catalog
-    schema: raw_adventureworks # Replace with your raw data schema
+    database: ted_dev # Replace with my Databricks Catalog
+    schema: dev_guilherme_sobrinho # Replace with my raw data schema
     tables:
       - name: customer
         description: Raw customer data from AdventureWorks.
