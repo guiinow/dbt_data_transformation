@@ -1,6 +1,6 @@
 {{ config(
     materialized='view',
-    schema='staging' # This can also be set in dbt_project.yml
+    schema='staging' 
 ) }}
 
 SELECT

@@ -15,7 +15,9 @@ SELECT
     isl.unit_price_discount,
     isl.line_total AS gross_amount,
     isl.discounted_line_total AS net_amount
-FROM {{ ref('int_sales_order_lines') }} isl
+FROM {{ ref('stg_salesorderdetail') }} sod
+JOIN {{ ref('stg_salesorderheader') }} soh
+  ON sod.SalesOrderID = soh.SalesOrderID isl
 JOIN {{ ref('dim_customer') }} dc
     ON isl.customer_id = dc.customer_id
 JOIN {{ ref('dim_product') }} dp
