@@ -170,3 +170,13 @@ Este projeto utiliza o [dbt](https://www.getdbt.com/) para modelagem e orquestra
 
 - [Documentação oficial do dbt](https://docs.getdbt.com/docs/introduction)
 - [Comunidade dbt no Slack](https://community.getdbt.com/)
+
+
+
+
+
+
+
+export $(cat .env | xargs) 
+python3 -m venv .venv  
+source .venv/bin/activate     
