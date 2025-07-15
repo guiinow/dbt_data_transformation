@@ -4,7 +4,7 @@
 ) }}
 
 SELECT
-    {{ dbt_utils.surrogate_key(['product_id']) }} AS product_key,
+    {{ dbt_utils.generate_surrogate_key (['product_id']) }} AS product_key,
     product_id,
     name AS product_name,
     productnumber AS product_number,

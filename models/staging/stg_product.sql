@@ -19,4 +19,4 @@ SELECT
     discontinueddate,
     rowguid,
     modifieddate
-FROM {{ source('adventureworks_raw', 'product') }}
+FROM {{ source('adventureworks_raw', 'raw_database_product') }}

@@ -12,4 +12,4 @@ SELECT
     Freight AS freight,
     TotalDue AS total_due,
     ModifiedDate AS modified_date
-FROM {{ source('adventureworks_raw', 'salesorderheader') }}
+FROM {{ source('adventureworks_raw', 'raw_database_salesorderheader') }}

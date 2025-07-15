@@ -4,21 +4,23 @@
 ) }}
 
 SELECT
-    {{ dbt_utils.surrogate_key(['sales_order_detail_id']) }} AS sales_order_detail_key,
-    isl.sales_order_id,
-    isl.sales_order_detail_id,
+    {{ dbt_utils.generate_surrogate_key(['sod.sales_order_detail_id']) }} AS sales_order_detail_key,
+    sod.sales_order_id,
+    sod.sales_order_detail_id,
     dc.customer_key,
     dp.product_key,
-    isl.order_date,
-    isl.order_quantity,
-    isl.unit_price,
-    isl.unit_price_discount,
-    isl.line_total AS gross_amount,
-    isl.discounted_line_total AS net_amount
+    soh.order_date,
+    sod.order_quantity,
+    sod.unit_price,
+    sod.unit_price_discount,
+    -- Calcular o valor "bruto" (sem desconto)
+    sod.order_quantity * sod.unit_price AS gross_amount,
+    -- 'line_total' da fonte já inclui o desconto, então é o "net_amount"
+    sod.line_total AS net_amount
 FROM {{ ref('stg_salesorderdetail') }} sod
 JOIN {{ ref('stg_salesorderheader') }} soh
-  ON sod.SalesOrderID = soh.SalesOrderID isl
+  ON sod.sales_order_id = soh.sales_order_id 
 JOIN {{ ref('dim_customer') }} dc
-    ON isl.customer_id = dc.customer_id
+    ON soh.customer_id = dc.customer_id 
 JOIN {{ ref('dim_product') }} dp
-    ON isl.product_id = dp.product_id
+    ON sod.product_id = dp.product_id 

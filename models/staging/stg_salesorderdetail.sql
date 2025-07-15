@@ -12,4 +12,4 @@ SELECT
     UnitPriceDiscount AS unit_price_discount,
     LineTotal AS line_total,
     ModifiedDate AS modified_date
-FROM {{ source('adventureworks_raw', 'salesorderdetail') }}
+FROM {{ source('adventureworks_raw', 'raw_database_salesorderdetail') }}

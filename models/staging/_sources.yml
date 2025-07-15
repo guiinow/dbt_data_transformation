@@ -5,7 +5,7 @@ sources:
     database: ted_dev # Replace with my Databricks Catalog
     schema: dev_guilherme_sobrinho # Replace with my raw data schema
     tables:
-      - name: customer
+      - name: raw_database_customer
         description: Raw customer data from AdventureWorks.
         columns:
           - name: CustomerID
@@ -16,7 +16,7 @@ sources:
           - name: StoreID
             description: Store ID if the customer is associated with a store.
           # Add descriptions for all relevant columns
-      - name: product
+      - name: raw_database_product
         description: Raw product data from AdventureWorks.
         columns:
           - name: ProductID
@@ -28,7 +28,7 @@ sources:
             description: Name of the product.
           - name: ListPrice
             description: Selling price of the product.
-      - name: salesorderheader
+      - name: raw_database_salesorderheader
         description: Raw sales order header data.
         columns:
           - name: SalesOrderID
@@ -45,7 +45,7 @@ sources:
               - relationships:
                   to: source('adventureworks_raw', 'customer')
                   field: CustomerID
-      - name: salesorderdetail
+      - name: raw_database_salesorderdetail
         description: Raw sales order detail data.
         columns:
           - name: SalesOrderDetailID
