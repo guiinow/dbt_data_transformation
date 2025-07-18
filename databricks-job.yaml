@@ -1,0 +1,33 @@
+resources:
+  jobs:
+    checkpoint3_marts:
+      name: checkpoint3-marts
+      schedule:
+        quartz_cron_expression: 16 0 3 * * ?
+        timezone_id: UTC
+        pause_status: UNPAUSED
+      tasks:
+        - task_key: checkpoint3-marts
+          dbt_task:
+            project_directory: ""
+            commands:
+              - dbt deps
+              - dbt build
+            schema: dev_guilherme_sobrinho_marts
+            warehouse_id: 2c382cb7d47e2867
+            catalog: ted_dev
+            source: GIT
+          environment_key: dbt-default
+      git_source:
+        git_url: https://github.com/guiinow/dbt_data_transformation
+        git_provider: gitHub
+        git_branch: main
+      queue:
+        enabled: true
+      environments:
+        - environment_key: dbt-default
+          spec:
+            client: "2"
+            dependencies:
+              - dbt-databricks>=1.0.0,<2.0.0
+      performance_target: STANDARD
