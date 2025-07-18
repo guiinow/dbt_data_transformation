@@ -12,6 +12,8 @@
   - [Execução do Projeto](#execução-do-projeto)
   - [Regras de Negócio](#regras-de-negócio)
   - [Testes](#testes)
+  - [Documentação Automática do dbt](#documentação-automática-do-dbt)
+  - [Mantenha seus arquivos `.yml` bem preenchidos para uma documentação mais rica e](#mantenha-seus-arquivos-yml-bem-preenchidos-para-uma-documentação-mais-rica-e)
   - [Observações Finais](#observações-finais)
 
 ---
@@ -117,7 +119,21 @@ O projeto possui uma suíte de testes automatizados para garantir a qualidade e 
 - **Status:** Todos os 29 testes passaram com sucesso, comprovando a estabilidade e aderência às regras de negócio estabelecidas.
 
 ---
+## Documentação Automática do dbt
 
+O dbt permite gerar documentação automática do projeto, incluindo modelos, fontes, testes e linhagem dos dados.
+
+Para gerar e visualizar a documentação:
+
+```bash
+dbt docs generate
+dbt docs serve
+```
+
+O comando `dbt docs serve` abrirá uma interface web interativa (por padrão em http://localhost:8080) mostrando toda a documentação do seu projeto, incluindo descrições, relacionamentos e dependências entre os modelos.
+
+Mantenha seus arquivos `.yml` bem preenchidos para uma documentação mais rica e
+--
 ## Observações Finais
 
 - **Sempre ative o ambiente virtual e carregue as variáveis de ambiente antes de rodar qualquer comando.**
@@ -136,6 +152,3 @@ source .venv/bin/activate
 export $(cat .env | xargs)
 dbt run
 dbt test
-```
-
----
