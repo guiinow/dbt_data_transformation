@@ -1,182 +1,141 @@
-Welcome to your new dbt project!
+# Documentação do Projeto - Checkpoint 3: Modelagem e Orquestração
 
-### Using the starter project
+## Sumário
 
-Try running the following commands:
-- dbt run
-- dbt test
-
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
-
-
-# Projeto dbt: AdventureWorks
-
-Este projeto utiliza o [dbt](https://www.getdbt.com/) para modelagem e orquestração de dados no Databricks, seguindo a arquitetura de camadas (staging, marts).
-
-## Pré-requisitos
-
-- Python 3.7+
-- Conta e workspace no Databricks
-- Token de acesso Databricks
-- [dbt-core](https://pypi.org/project/dbt-core/) e [dbt-databricks](https://pypi.org/project/dbt-databricks/)
-
-## Instalação
-
-1. Instale as dependências:
-   ```sh
-   pip install dbt-core dbt-databricks
-   ```
-
-2. Configure o arquivo `.env` na raiz do projeto com as variáveis:
-   ```
-   DATABRICKS_TOKEN=seu_token
-   DATABRICKS_HOST=https://seu-workspace.cloud.databricks.com
-   DATABRICKS_HTTP_PATH=/sql/1.0/warehouses/xxxxxx
-   ```
-
-3. Configure o arquivo `~/.dbt/profiles.yml` conforme o perfil `aw_dbt`:
-   ```yaml
-   aw_dbt:
-     target: dev
-     outputs:
-       dev:
-         type: databricks
-         catalog: ted_dev
-         schema: dev_guilherme_sobrinho
-         host: "{{ env_var('DATABRICKS_HOST') }}"
-         http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
-         token: "{{ env_var('DATABRICKS_TOKEN') }}"
-         threads: 1
-         connect_timeout: 10
-   ```
-
-## Estrutura do Projeto
-
-- `models/staging/`: Camada de staging (views)
-- `models/marts/`: Camada de marts (tables)
-- `models/marts/_marts.yml`: Schema e testes dos modelos marts
-- `tests/`: Testes customizados SQL
-- `analyses/`, `macros/`, `seeds/`, `snapshots/`: Diretórios reservados para análises, macros, seeds e snapshots
-
-## Como rodar
-
-1. Compile e execute os modelos:
-   ```sh
-   dbt run
-   ```
-
-2. Execute os testes:
-   ```sh
-   dbt test
-   ```
-
-3. (Opcional) Limpe artefatos:
-   ```sh
-   dbt clean
-   ```
-
-## Observações
-
-- Certifique-se de que as tabelas fontes (raw) estejam disponíveis no Databricks.
-- O arquivo `dbt_project.yml` já está configurado para separar schemas e materializações por camada.
-- O diretório `target/` não deve ser versionado (veja `.gitignore`).
-
-## Recursos úteis
-
-- [Documentação oficial do dbt](https://docs.getdbt.com/docs/introduction)
-- [Comunidade dbt no Slack](https://community.getdbt.com/)
-- [Blog dbt](https://blog.getdbt.com/)
+- [Documentação do Projeto - Checkpoint 3: Modelagem e Orquestração](#documentação-do-projeto---checkpoint-3-modelagem-e-orquestração)
+  - [Sumário](#sumário)
+  - [Introdução](#introdução)
+  - [Requisitos](#requisitos)
+  - [Configuração do Ambiente](#configuração-do-ambiente)
+    - [1. Ativando o Ambiente Virtual](#1-ativando-o-ambiente-virtual)
+    - [2. Carregando as Variáveis de Ambiente](#2-carregando-as-variáveis-de-ambiente)
+  - [Execução do Projeto](#execução-do-projeto)
+  - [Regras de Negócio](#regras-de-negócio)
+  - [Testes](#testes)
+  - [Observações Finais](#observações-finais)
 
 ---
-```# Projeto dbt: AdventureWorks
 
-Este projeto utiliza o [dbt](https://www.getdbt.com/) para modelagem e orquestração de dados no Databricks, seguindo a arquitetura de camadas (staging, marts).
+## Introdução
 
-## Pré-requisitos
+Este projeto tem como objetivo a modelagem e orquestração de dados utilizando DBT (Data Build Tool) e Python, seguindo as melhores práticas de engenharia de dados. O projeto foi desenvolvido como parte do Checkpoint 3 do curso da Indicium.
 
-- Python 3.7+
+---
+
+## Requisitos
+
+- Python 3.8+
+- DBT
+- Dependências listadas em `requirements.txt`
+- Variáveis de ambiente configuradas no arquivo `.env`
 - Conta e workspace no Databricks
 - Token de acesso Databricks
-- [dbt-core](https://pypi.org/project/dbt-core/) e [dbt-databricks](https://pypi.org/project/dbt-databricks/)
 
-## Instalação
+---
 
-1. Instale as dependências:
-   ```sh
-   pip install dbt-core dbt-databricks
+## Configuração do Ambiente
+
+Antes de executar o projeto, é fundamental garantir que o ambiente virtual está ativado e que as variáveis de ambiente estão devidamente carregadas.
+
+### 1. Ativando o Ambiente Virtual
+
+No terminal, navegue até a raiz do projeto e execute:
+
+```bash
+source .venv/bin/activate
+```
+
+Isso garante que todas as dependências do projeto sejam utilizadas corretamente.
+
+### 2. Carregando as Variáveis de Ambiente
+
+Com o ambiente virtual ativado, carregue as variáveis de ambiente definidas no arquivo `.env`:
+
+```bash
+export $(cat .env | xargs)
+```
+
+**Atenção:**  
+Esses dois passos são obrigatórios para garantir o funcionamento correto do projeto.
+
+---
+
+## Execução do Projeto
+
+Após ativar o ambiente virtual e carregar as variáveis de ambiente, siga as instruções abaixo para rodar o projeto:
+
+1. **Instale as dependências (caso ainda não tenha feito):**
+   ```bash
+   pip install -r requirements.txt
    ```
 
-2. Configure o arquivo `.env` na raiz do projeto com as variáveis:
-   ```
-   DATABRICKS_TOKEN=seu_token
-   DATABRICKS_HOST://seu-workspace.cloud.databricks.com
-   DATABRICKS_HTTP_PATH=/sql/1.0/warehouses/xxxxxx
-   ```
-
-3. Configure o arquivo `~/.dbt/profiles.yml` conforme o perfil `aw_dbt`:
-   ```yaml
-   aw_dbt:
-     target: dev
-     outputs:
-       dev:
-         type: databricks
-         catalog: ted_dev
-         schema: dev_guilherme_sobrinho
-         host: "{{ env_var('DATABRICKS_HOST') }}"
-         http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
-         token: "{{ env_var('DATABRICKS_TOKEN') }}"
-         threads: 1
-         connect_timeout: 10
-   ```
-
-## Estrutura do Projeto
-
-- `models/staging/`: Camada de staging (views)
-- `models/marts/`: Camada de marts (tables)
-- `models/marts/_marts.yml`: Schema e testes dos modelos marts
-- `tests/`: Testes customizados SQL
-- `analyses/`, `macros/`, `seeds/`, `snapshots/`: Diretórios reservados para análises, macros, seeds e snapshots
-
-## Como rodar
-
-1. Compile e execute os modelos:
-   ```sh
+2. **Compile e execute os modelos dbt:**
+   ```bash
    dbt run
    ```
 
-2. Execute os testes:
-   ```sh
+3. **Execute os testes dbt:**
+   ```bash
    dbt test
    ```
 
-3. (Opcional) Limpe artefatos:
-   ```sh
+4. **(Opcional) Limpe artefatos:**
+   ```bash
    dbt clean
    ```
 
-## Observações
+---
 
+## Regras de Negócio
+
+O projeto implementa as seguintes regras de negócio:
+
+1. **Modelagem dos Dados:**  
+   - Estruturação dos dados brutos em modelos dimensionais e factuais.
+   - Garantia de integridade referencial entre tabelas.
+   - Aplicação de transformações necessárias para padronização e limpeza dos dados.
+
+2. **Orquestração:**  
+   - Execução automatizada das etapas de extração, transformação e carga (ETL).
+   - Sequenciamento das tarefas para garantir a ordem correta de processamento.
+
+3. **Validação dos Dados:**  
+   - Implementação de testes de qualidade para garantir a consistência dos dados.
+   - Checagem de duplicidades, valores nulos e integridade dos relacionamentos.
+
+4. **Segurança e Configuração:**  
+   - Utilização de variáveis de ambiente para proteger informações sensíveis (senhas, chaves de acesso, etc).
+   - Isolamento do ambiente de execução via virtualenv.
+
+---
+
+## Testes
+
+O projeto possui uma suíte de testes automatizados para garantir a qualidade e robustez das implementações.
+
+- **Total de testes:** 29
+- **Status:** Todos os 29 testes passaram com sucesso, comprovando a estabilidade e aderência às regras de negócio estabelecidas.
+
+---
+
+## Observações Finais
+
+- **Sempre ative o ambiente virtual e carregue as variáveis de ambiente antes de rodar qualquer comando.**
+- Em caso de dúvidas ou problemas, consulte os logs de execução ou entre em contato com o responsável pelo projeto.
 - Certifique-se de que as tabelas fontes (raw) estejam disponíveis no Databricks.
 - O arquivo `dbt_project.yml` já está configurado para separar schemas e materializações por camada.
 - O diretório `target/` não deve ser versionado (veja `.gitignore`).
 
-## Recursos úteis
+---
 
-- [Documentação oficial do dbt](https://docs.getdbt.com/docs/introduction)
-- [Comunidade dbt no Slack](https://community.getdbt.com/)
+**Exemplo de execução completa:**
 
+```bash
+cd ~/Documents/indicium/checkpoint3/aw_dbt
+source .venv/bin/activate
+export $(cat .env | xargs)
+dbt run
+dbt test
+```
 
-
-
-
-
-
-export $(cat .env | xargs) 
-python3 -m venv .venv  
-source .venv/bin/activate     
+---

@@ -4,7 +4,7 @@
 ) }}
 
 SELECT
-    {{ dbt_utils.generate_surrogate_key (['customer_id']) }} AS customer_key, -- Using dbt_utils for surrogate key
+    {{ dbt_utils.generate_surrogate_key (['customer_id']) }} AS customer_key, 
     customer_id,
     person_id,
     store_id,
