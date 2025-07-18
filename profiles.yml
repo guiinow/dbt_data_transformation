@@ -1,0 +1,13 @@
+aw_dbt:
+  outputs:
+    dev:
+      type: databricks
+      catalog: ted_dev
+      host: "{{ env_var('DATABRICKS_HOST') }}"
+      http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
+      schema: dev_guilherme_sobrinho
+      threads: 1
+      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      
+
+  target: dev
