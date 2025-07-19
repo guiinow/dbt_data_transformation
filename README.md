@@ -1,5 +1,5 @@
 # Documentação do Projeto - Checkpoint 3: Modelagem e Orquestração
-
+Guilherme Ferreira
 ## Sumário
 
 - [Documentação do Projeto - Checkpoint 3: Modelagem e Orquestração](#documentação-do-projeto---checkpoint-3-modelagem-e-orquestração)
@@ -13,7 +13,6 @@
   - [Regras de Negócio](#regras-de-negócio)
   - [Testes](#testes)
   - [Documentação Automática do dbt](#documentação-automática-do-dbt)
-  - [Mantenha seus arquivos `.yml` bem preenchidos para uma documentação mais rica e](#mantenha-seus-arquivos-yml-bem-preenchidos-para-uma-documentação-mais-rica-e)
   - [Observações Finais](#observações-finais)
 
 ---
@@ -132,7 +131,6 @@ dbt docs serve
 
 O comando `dbt docs serve` abrirá uma interface web interativa (por padrão em http://localhost:8080) mostrando toda a documentação do seu projeto, incluindo descrições, relacionamentos e dependências entre os modelos.
 
-Mantenha seus arquivos `.yml` bem preenchidos para uma documentação mais rica e
 --
 ## Observações Finais
 
