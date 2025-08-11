@@ -34,6 +34,10 @@ models:
     marts:
       +schema: marts
       +materialized: table # Marts models should be tables as per requirements 
+    snapshots:
+      marts:
+        +schema: marts
+        +materialized: snapshot
 
 # Example of sources configuration
 # You would define your raw data sources here.

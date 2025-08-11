@@ -43,7 +43,7 @@ sources:
             tests:
               - not_null
               - relationships:
-                  to: source('adventureworks_raw', 'customer')
+                  to: source('adventureworks_raw', 'raw_database_customer')
                   field: CustomerID
       - name: raw_database_salesorderdetail
         description: Raw sales order detail data.
@@ -58,12 +58,49 @@ sources:
             tests:
               - not_null
               - relationships:
-                  to: source('adventureworks_raw', 'salesorderheader')
+                  to: source('adventureworks_raw', 'raw_database_salesorderheader')
                   field: SalesOrderID
           - name: ProductID
             description: Foreign key to Product table.
             tests:
               - not_null
               - relationships:
-                  to: source('adventureworks_raw', 'product')
+                  to: source('adventureworks_raw', 'raw_database_product')
                   field: ProductID
+      - name: raw_database_productcategory
+        description: Raw product category data from AdventureWorks.
+        columns:
+          - name: ProductCategoryID
+            description: Primary key for ProductCategory records.
+            tests:
+              - unique
+              - not_null
+          - name: Name
+            description: Name of the product category.
+      - name: raw_database_productsubcategory
+        description: Raw product subcategory data from AdventureWorks.
+        columns:
+          - name: ProductSubcategoryID
+            description: Primary key for ProductSubcategory records.
+            tests:
+              - unique
+              - not_null
+          - name: ProductCategoryID
+            description: Foreign key to ProductCategory table.
+            tests:
+              - not_null
+              - relationships:
+                  to: source('adventureworks_raw', 'raw_database_productcategory')
+                  field: ProductCategoryID
+      - name: raw_database_salesterritory
+        description: Raw sales territory data.
+        columns:
+          - name: TerritoryID
+            description: Primary key for Territory records.
+            tests:
+              - unique
+              - not_null
+          - name: Name
+            description: Name of the sales territory.
+          - name: CountryRegionCode
+            description: Country region code of the sales territory.

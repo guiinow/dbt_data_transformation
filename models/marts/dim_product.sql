@@ -4,20 +4,26 @@
 ) }}
 
 SELECT
-    {{ dbt_utils.generate_surrogate_key (['product_id']) }} AS product_key,
-    product_id,
-    name AS product_name,
-    productnumber AS product_number,
-    makeflag AS make_flag,
-    finishedgoodsflag AS finished_goods_flag,
-    color,
-    safetystocklevel AS safety_stock_level,
-    reorderpoint AS reorder_point,
-    standardcost AS standard_cost,
-    listprice AS list_price,
-    sellstartdate AS sell_start_date,
-    sellenddate AS sell_end_date,
-    discontinueddate AS discontinued_date,
-    rowguid AS row_guid,
-    modifieddate AS modified_date
-FROM {{ ref('stg_product') }}
+    {{ dbt_utils.generate_surrogate_key(['p.product_id']) }} AS product_key,
+    p.product_id,
+    p.name AS product_name,
+    p.productnumber AS product_number,
+    p.makeflag AS make_flag,
+    p.finishedgoodsflag AS finished_goods_flag,
+    p.color,
+    p.safetystocklevel AS safety_stock_level,
+    p.reorderpoint AS reorder_point,
+    p.standardcost AS standard_cost,
+    p.listprice AS list_price,
+    p.sellstartdate AS sell_start_date,
+    p.sellenddate AS sell_end_date,
+    p.discontinueddate AS discontinued_date,
+    p.rowguid AS row_guid,
+    p.modifieddate AS modified_date,
+    ps.product_subcategory_name,
+    pc.product_category_name
+FROM {{ ref('stg_product') }} p
+LEFT JOIN {{ ref('stg_productsubcategory') }} ps
+    ON p.product_id = ps.product_subcategory_id
+LEFT JOIN {{ ref('stg_productcategory') }} pc
+    ON ps.product_category_id = pc.product_category_id

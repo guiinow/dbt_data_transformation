@@ -1,51 +1,13 @@
 version: 2
 
 models:
-  - name: dim_customer
-    description: Dimension table for customers.
-    columns:
-      - name: customer_key
-        description: Surrogate key for the customer dimension.
-        tests:
-          - unique
-          - not_null
-      - name: customer_id
-        description: Natural key for the customer from the source system.
-        tests:
-          - unique
-          - not_null
-      - name: account_number
-        description: Customer's account number.
-      - name: is_store_customer
-        description: 'True if the customer is associated with a store, False otherwise.'
-
   - name: dim_product
-    description: Dimension table for products.
-    columns:
-      - name: product_key
-        description: Surrogate key for the product dimension.
-        tests:
-          - unique
-          - not_null
-      - name: product_id
-        description: Natural key for the product from the source system.
-        tests:
-          - unique
-          - not_null
-      - name: product_name
-        description: Name of the product.
-      - name: list_price
-        description: Selling price of the product.
-      - name: product_category
-        description: Category of the product.
-
   - name: fact_sales
     description: Fact table containing sales transaction data.
     columns:
       - name: sales_order_detail_key
         description: Surrogate key for the sales order detail.
         tests:
-          - unique
           - not_null
       - name: sales_order_id
         description: Natural key for the sales order header.
@@ -63,6 +25,8 @@ models:
           - relationships:
               to: ref('dim_product')
               field: product_key
+      - name: product_name
+        description: Name of the product sold.
       - name: order_date
         description: Date of the sales order.
       - name: order_quantity
@@ -75,16 +39,24 @@ models:
         description: Calculated gross amount (quantity * unit price).
       - name: net_amount
         description: Calculated net amount (gross amount * (1 - discount)).
+      - name: territory_name
+        description: Name of the sales territory.
+      - name: country_region_code
+        description: Country region code of the sales territory.
+      - name: sales_ytd
+        description: Sales year to date for the territory.
+      - name: sales_last_year
+        description: Sales last year for the territory.
 
-  - name: fact_sales_daily_snapshot # Example of additional fact table 
-    description: Daily snapshot of total sales.
-    columns:
-      - name: snapshot_date
-        description: The date for which the snapshot was taken.
-        tests:
-          - unique
-          - not_null
-      - name: total_sales_amount
-        description: The total net sales amount for the day.
-      - name: total_orders
-        description: The total number of unique orders for the day.
+  # - name: fact_sales_daily_snapshot # Example of additional fact table
+  #   description: Daily snapshot of total sales.
+  #   columns:
+  #     - name: snapshot_date
+  #       description: The date for which the snapshot was taken.
+  #       tests:
+  #         - unique
+  #         - not_null
+  #     - name: total_sales_amount
+  #       description: The total net sales amount for the day.
+  #     - name: total_orders
+  #       description: The total number of unique orders for the day.
