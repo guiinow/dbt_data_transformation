@@ -11,7 +11,6 @@ analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
 
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to clean when `dbt clean` is run
@@ -34,11 +33,7 @@ models:
     marts:
       +schema: marts
       +materialized: table # Marts models should be tables as per requirements 
-    snapshots:
-      marts:
-        +schema: marts
-        +materialized: snapshot
-
+   
 # Example of sources configuration
 # You would define your raw data sources here.
 # Replace 'your_database' and 'your_schema' with your actual raw data locations.

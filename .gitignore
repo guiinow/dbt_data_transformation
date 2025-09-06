@@ -5,3 +5,4 @@ logs/
 .venv
 .env
 *.pdf
+dbt_internal_packages/

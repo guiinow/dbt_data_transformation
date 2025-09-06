@@ -5,8 +5,9 @@
 
 SELECT
     productid AS product_id,
-    name,
-    productnumber,
+    Name AS product_name,
+    ProductNumber AS productnumber,
+    ProductSubcategoryID AS product_subcategory_id,
     makeflag,
     finishedgoodsflag,
     color,

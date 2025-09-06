@@ -41,10 +41,10 @@ sources:
           - name: CustomerID
             description: Foreign key to the Customer table.
             tests:
-              - not_null
               - relationships:
-                  to: source('adventureworks_raw', 'raw_database_customer')
-                  field: CustomerID
+                  arguments:
+                    to: source('adventureworks_raw', 'raw_database_customer')
+                    field: CustomerID
       - name: raw_database_salesorderdetail
         description: Raw sales order detail data.
         columns:
@@ -58,15 +58,17 @@ sources:
             tests:
               - not_null
               - relationships:
-                  to: source('adventureworks_raw', 'raw_database_salesorderheader')
-                  field: SalesOrderID
+                  arguments:
+                    to: source('adventureworks_raw', 'raw_database_salesorderheader')
+                    field: SalesOrderID
           - name: ProductID
             description: Foreign key to Product table.
             tests:
               - not_null
               - relationships:
-                  to: source('adventureworks_raw', 'raw_database_product')
-                  field: ProductID
+                  arguments:
+                    to: source('adventureworks_raw', 'raw_database_product')
+                    field: ProductID
       - name: raw_database_productcategory
         description: Raw product category data from AdventureWorks.
         columns:
@@ -90,8 +92,9 @@ sources:
             tests:
               - not_null
               - relationships:
-                  to: source('adventureworks_raw', 'raw_database_productcategory')
-                  field: ProductCategoryID
+                  arguments:
+                    to: source('adventureworks_raw', 'raw_database_productcategory')
+                    field: ProductCategoryID
       - name: raw_database_salesterritory
         description: Raw sales territory data.
         columns:

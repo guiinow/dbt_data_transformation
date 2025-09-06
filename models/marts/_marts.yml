@@ -2,6 +2,34 @@ version: 2
 
 models:
   - name: dim_product
+    description: Dimension table for products, including category and subcategory information.
+    columns:
+      - name: product_id
+        description: Natural key for the product from the source system.
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: Name of the product.
+        tests:
+          - not_null
+      - name: productnumber
+        description: Product number from the source system.
+      - name: product_subcategory_id
+        description: Foreign key to product subcategory.
+        
+      - name: product_subcategory_name
+        description: Name of the product subcategory.
+      - name: product_category_id
+        description: Foreign key to product category.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_productcategory')
+                field: product_category_id
+      - name: product_category_name
+        description: Name of the product category.
+
   - name: fact_sales
     description: Fact table containing sales transaction data.
     columns:
@@ -17,14 +45,17 @@ models:
         description: Foreign key to dim_customer.
         tests:
           - relationships:
-              to: ref('dim_customer')
-              field: customer_key
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
       - name: product_key
         description: Foreign key to dim_product.
         tests:
           - relationships:
-              to: ref('dim_product')
-              field: product_key
+              arguments:
+                to: ref('dim_product')
+                field: product_key
+# ...existing code...
       - name: product_name
         description: Name of the product sold.
       - name: order_date
@@ -47,16 +78,3 @@ models:
         description: Sales year to date for the territory.
       - name: sales_last_year
         description: Sales last year for the territory.
-
-  # - name: fact_sales_daily_snapshot # Example of additional fact table
-  #   description: Daily snapshot of total sales.
-  #   columns:
-  #     - name: snapshot_date
-  #       description: The date for which the snapshot was taken.
-  #       tests:
-  #         - unique
-  #         - not_null
-  #     - name: total_sales_amount
-  #       description: The total net sales amount for the day.
-  #     - name: total_orders
-  #       description: The total number of unique orders for the day.
